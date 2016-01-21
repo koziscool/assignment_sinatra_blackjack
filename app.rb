@@ -2,13 +2,13 @@ require 'sinatra'
 require 'sinatra/reloader'
 require_relative 'deck.rb'
 
-get '/blackjack' do
+get '/' do
   erb :blackjack
 end
 
 post '/' do
-  player_hand = Hand.new
-  dealer_hand = Hand.new
-
+  deck = Deck.new
+  player_hand = Hand.new( deck )
+  dealer_hand = Hand.new( deck )
 
 end

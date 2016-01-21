@@ -1,6 +1,5 @@
 require_relative 'deck'
 
-
 class Hand
   
   HAND_STATUS = {'LIVE' => 'live', 'PAT' => 'pat', 'BUST' => 'bust'}
@@ -26,7 +25,5 @@ class Hand
 
   def check_status
   end
-
-  
 
 end
