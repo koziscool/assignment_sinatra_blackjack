@@ -21,7 +21,7 @@ class Hand
     check_status
   end
 
-  def stand
+  def stay
     @status = 'PAT'
   end
 
@@ -29,3 +29,9 @@ class Hand
   end
 
 end
+
+test = Hand.new(Deck.new)
+player_hand_string = test.cards.reduce("") do |str, card| 
+str + card.to_s
+end
+print player_hand_string

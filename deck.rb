@@ -8,7 +8,7 @@ end
 
 class Deck
 
-attr_accessor :cards
+attr_accessor :cards, :discards
 
 SUITS = {:C => 'c', :H => 'h', :S => 's', :D => 'd'}
 RANKS = {'A' => 'a', '2' => '2', '3' => '3', '4' => '4', '5' => '5', '6' =>'6', '7' =>'7', '8' => '8', '9' => '9', 'T' => 't', 'J' => 'j', 'Q' => 'q', 'K' => 'k'}
