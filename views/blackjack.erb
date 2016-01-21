@@ -7,10 +7,23 @@
   <title>Sinatra Blackjack</title>
 </head>
 <body>
-<button type="button" method ="post" >Begin Game</button>
+    <form action="/" method = "post">
+        <input type="submit" value="Begin Game">
+    </form>
+    
+    <h4>Dealer Hand</h4>
+    <% if defined? dealer_hand %>
+        <% dealer_hand.cards.each  do |card|  %>
+         <span> <%= card %> </span> 
+        <% end %> 
+    <%  end  %>
 
-    <h2>House Hand</h2>
-    <p> random stuff here</p>
+    <h4>Player Hand</h4>
+    <% if defined? player_hand %>    
+        <% player_hand.cards.each  do |card|  %>
+            <span><%= card %> </span> 
+        <% end %> 
+    <%  end  %>
 
 </body>
 </html>
