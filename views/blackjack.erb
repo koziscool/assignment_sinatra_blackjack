@@ -23,6 +23,7 @@
         <% player_hand.cards.each  do |card|  %>
             <span><%= card %> </span> 
         <% end %> 
+        <div><%= player_hand.hand_value%> </div>
     <%  end  %>
 
     <form action="/hit" method = "post">

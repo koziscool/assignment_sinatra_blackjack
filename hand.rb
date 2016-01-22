@@ -3,7 +3,9 @@ require 'json'
 
 class Hand
   
-  HAND_STATUS = {'LIVE' => 'live', 'PAT' => 'pat', 'BUST' => 'bust'}
+  CARD_VALUE ={'a' => 1, '2' => 2, '3' => 3, '4' => 4, '5' => 5, '6' =>6, '7' =>7, '8' => 8, '9' => 9, 't' => 10, 'j' => 10, 'q' => 10, 'k' => 10}
+
+  VALUE = []
 
   attr_accessor :cards, :status
 
@@ -19,7 +21,7 @@ class Hand
 
   def hit(deck)
     @cards << deck.deal_card
-    check_status
+    update_status
   end
 
   def stay
@@ -42,7 +44,16 @@ class Hand
     serialize_arr.to_json
   end
 
-  def check_status
+  def hand_value
+    @cards.reduce(0) do |sum, card|
+        sum + CARD_VALUE[card.rank]
+    end
+  end
+
+  def update_status
+    if hand_value > 21
+      status = 'BUST'
+    end
   end
 
 end
