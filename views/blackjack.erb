@@ -12,28 +12,35 @@
     </form>
     
     <h4>Dealer Hand</h4>
-    <% if defined? dealer_hand %>
-        <% dealer_hand.cards.each  do |card|  %>
+    <% if defined? game.dealer_hand %>
+        <% game.dealer_hand.cards.each  do |card|  %>
          <span> <%= card %> </span> 
         <% end %> 
     <%  end  %>
 
     <h4>Player Hand</h4>
-    <% if defined? player_hand %>    
-        <% player_hand.cards.each  do |card|  %>
+    <% if defined? game.player_hand %>    
+        <% game.player_hand.cards.each  do |card|  %>
             <span><%= card %> </span> 
         <% end %> 
-        <div><%= player_hand.hand_value%> </div>
+        <div><%= game.player_hand.hand_value%> </div>
     <%  end  %>
 
-    <form action="/hit" method = "post">
+   <% if game.player_hand.status == "LIVE" %>    
+      <form action="/hit" method = "post">
         <input type="submit" value="Hit">
-    </form>
+      </form>
+   <% else %>    
+      <input type="submit" disabled value="Hit" />
+   <% end %>    
 
-
+  <% if game.player_hand.status == "LIVE" %>    
     <form action="/stay" method = "post">
         <input type="submit" value="Stay">
-    </form>
+     </form>
+ <% else %>    
+      <input type="submit" value="Stay" disabled>
+ <% end %>    
 
 </body>
 </html>

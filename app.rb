@@ -5,6 +5,7 @@ require 'json'
 require 'pry'
 require_relative 'deck.rb'
 require_relative 'hand.rb'
+require_relative 'game.rb'
 
 
 helpers do 
@@ -13,78 +14,56 @@ end
 
 
 get '/' do
-  erb :blackjack
-end
-
-post '/' do
+  game = Game.new
   deck = Deck.new
   deck.build_deck
   deck.shuffle
 
+  game.deck = deck
   player_hand = Hand.new
-  player_hand.starting_hand( deck )
-  response.set_cookie( "player_hand_cookie", player_hand.to_json )
+  player_hand.starting_hand( deck )  
+  game.player_hand = player_hand
 
-  
   dealer_hand = Hand.new
   dealer_hand.starting_hand( deck )
-  response.set_cookie( "dealer_hand_cookie", dealer_hand.to_json )
+  game.dealer_hand = dealer_hand
 
-  response.set_cookie( "deck_cookie", deck.to_json )
+  response.set_cookie( "game_cookie", game.to_json )
 
-  erb :blackjack, locals: {  
-    player_hand: player_hand, 
-    dealer_hand: dealer_hand 
-  }
+  erb :blackjack, locals: {  game: game }
+end
 
+post '/' do
+  game = Game.new
+  game.recreate_from_json( request.cookies["game_cookie"] )
+  erb :blackjack, locals: {  game: game }
 end
 
 
 post '/hit' do
- 
+  game = Game.new
+  game.recreate_from_json( request.cookies["game_cookie"] )
+  # print "samantha" if game.player_hand.status == nil
 
-  deck = Deck.new
-  # print  request.cookies["deck_cookie"]
+  game.player_hand.hit( game.deck )
+  puts "koziscool hit route"
 
-  deck.recreate_from_json( request.cookies["deck_cookie"] )
+  # game.player_hand.status = "tetris"
+  print game.player_hand.status
+  response.set_cookie( "game_cookie", game.to_json )
 
-  player_hand = Hand.new
-  player_hand.recreate_from_json(request.cookies["player_hand_cookie"] )
-
-  dealer_hand = Hand.new
-  dealer_hand.recreate_from_json(request.cookies["dealer_hand_cookie"] )
-
-  player_hand.hit( deck )
-
-  response.set_cookie( "player_hand_cookie", player_hand.to_json )
-  response.set_cookie( "deck_cookie", deck.to_json )
-
-  erb :blackjack, locals: {  
-  player_hand: player_hand, 
-  dealer_hand: dealer_hand}
-
-
+  erb :blackjack, locals:  {  game: game }
 end
 
 
 post '/stay' do
-  deck = Deck.new
-  # print  request.cookies["deck_cookie"]
 
-  deck.recreate_from_json(request.cookies["deck_cookie"] )
+  game = Game.new
+  game.recreate_from_json( request.cookies["game_cookie"] )
+  game.player_hand.stay
+  game.evaluate_winner
 
-  player_hand = Hand.new
-  player_hand.recreate_from_json(request.cookies["player_hand_cookie"] )
-
-   dealer_hand = Hand.new
-  dealer_hand.recreate_from_json(request.cookies["dealer_hand_cookie"] )
-
-  player_hand.stay
-
-   erb :blackjack, locals: {  
-  player_hand: player_hand, 
-  dealer_hand: dealer_hand}
-
+   erb :blackjack, locals:  {  game: game }
 end
 
 

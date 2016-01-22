@@ -52,7 +52,7 @@ class Hand
 
   def update_status
     if hand_value > 21
-      status = 'BUST'
+      @status = 'BUST'
     end
   end
 
