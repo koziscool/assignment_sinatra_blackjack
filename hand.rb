@@ -51,7 +51,7 @@ class Hand
   end
 
   def update_status
-    if hand_value > 21
+    if self.hand_value > 21
       @status = 'BUST'
     end
   end

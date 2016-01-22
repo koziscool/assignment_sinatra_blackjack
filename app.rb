@@ -8,11 +8,6 @@ require_relative 'hand.rb'
 require_relative 'game.rb'
 
 
-helpers do 
- 
-end
-
-
 get '/' do
   game = Game.new
   deck = Deck.new
@@ -43,13 +38,10 @@ end
 post '/hit' do
   game = Game.new
   game.recreate_from_json( request.cookies["game_cookie"] )
-  # print "samantha" if game.player_hand.status == nil
 
   game.player_hand.hit( game.deck )
-  puts "koziscool hit route"
 
-  # game.player_hand.status = "tetris"
-  print game.player_hand.status
+  puts game.player_hand.status
   response.set_cookie( "game_cookie", game.to_json )
 
   erb :blackjack, locals:  {  game: game }

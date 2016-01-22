@@ -27,7 +27,6 @@ class Game
 
   def evaluate_winner
     return "Dealer Wins" if @player_hand.status == "BUST"
-
   end
 
 end
